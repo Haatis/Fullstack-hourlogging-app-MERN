@@ -15,8 +15,6 @@ export default function HomePage() {
   const [selectedItems, setSelectedItems] = useState([]);
 
 
- 
-
   const addToList = () => {
     createLocation(name, address);
     setName("");
@@ -50,6 +48,8 @@ export default function HomePage() {
       setSelectedItems([...selectedItems, id]);
     }
   };
+  
+  
   if (!selectedDate) {
     return (
       <div>
@@ -57,23 +57,22 @@ export default function HomePage() {
         <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
           <input type='date' onChange={(e) => setSelectedDate(e.target.value)} />
         </div>
-        {hoursList.length > 0 &&
-          <div>
-            <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
-            <h3>Past logs</h3>
-            </div>
-            {hoursList.map((hours) => {
-              return (
-                <div key={hours._id}>
-                  <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
-                    <p className='m-2'>{hours.date}</p>
-                    <p className='m-2'>{hours.hours}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        }
+        {hoursList.map((hours) => {
+  const locationNames = hours.locations.map((locationId) => {
+    const location = locationList.find((l) => l._id === locationId);
+    return location ? location.name : "Unknown location";
+  });
+
+  return (
+    <div key={hours._id}>
+      <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
+        <p className='m-2'>{hours.date}</p>
+        <p className='m-2'>{hours.hours}</p>
+        <p className='m-2'>{locationNames.join(", ")}</p>
+      </div>
+    </div>
+  );
+})}
       </div>
     );
 }
