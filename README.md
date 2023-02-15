@@ -1,5 +1,5 @@
 # Fullstack-hourlogging-app-MERN
-<h2>Testaa sovellusta: <h2>
+<h2>Testaa sovellusta: </h2>
 <a>https://fullstackhourlogging.netlify.app/</a>
 
 Fullstack hour logging application with MERN (MongoDB, Express.js, React.js, Node.js).
