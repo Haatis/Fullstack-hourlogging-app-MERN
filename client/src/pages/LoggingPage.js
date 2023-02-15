@@ -8,11 +8,18 @@ export default function LoggingPage() {
   const searchParams = new URLSearchParams(location.search);
   const selectedDate = searchParams.get('selectedDate');
   const selectedItems = searchParams.get('selectedItems');
+  const [selectedLocations , setSelectedLocations] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
   const [numbers, setNumbers] = useState([]);
   const [endNumbers, setEndNumbers] = useState([]);
-  const { locationList} = useCRUD();
-  
+  const { locationList , createHours} = useCRUD();
+
+  if(selectedLocations.length === 0){
+    setSelectedLocations(selectedItems.split(','));
+  }
+  console.log(selectedLocations)
+
+
 
   const handleInputChange = (index, type, value) => {
     if (value.includes(',')) {
@@ -94,6 +101,9 @@ export default function LoggingPage() {
         <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
             <p className='m-2'>Total hours: {totalHours}</p>
         </div>
+        {totalHours && <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
+            <Link to="/"><button className='btn btn-success' onClick={() => createHours(selectedDate, totalHours, selectedLocations)}>Save</button></Link>
+        </div>}
         <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
         <Link to="/"><button className='btn btn-danger'>go back</button></Link>
         </div>

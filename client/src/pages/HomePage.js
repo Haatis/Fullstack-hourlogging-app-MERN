@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import useCRUD from '../hooks/useCRUD';
 
 export default function HomePage() {
-  const { locationList, createLocation, updateLocation, deleteLocation } = useCRUD();
+  const { locationList, hoursList,  createLocation, updateLocation, deleteLocation } = useCRUD();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -53,14 +53,30 @@ export default function HomePage() {
   if (!selectedDate) {
     return (
       <div>
-        
         <h2 className='text-center'>Select a date</h2>
         <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
           <input type='date' onChange={(e) => setSelectedDate(e.target.value)} />
         </div>
+        {hoursList.length > 0 &&
+          <div>
+            <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
+            <h3>Past logs</h3>
+            </div>
+            {hoursList.map((hours) => {
+              return (
+                <div key={hours._id}>
+                  <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
+                    <p className='m-2'>{hours.date}</p>
+                    <p className='m-2'>{hours.hours}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        }
       </div>
     );
-  }
+}
   return (
     <div>
       <h2 className='text-center'>Selected date: {selectedDate} </h2>

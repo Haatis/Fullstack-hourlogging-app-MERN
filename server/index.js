@@ -4,12 +4,13 @@ const cors = require('cors');
 const app = express();
 
 const LocationModel = require('./models/Location');
+const HoursModel = require('./models/Hours');
 
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('add your own connection string',
+mongoose.connect('own connection string here',
  { useNewUrlParser: true, 
 });
 
@@ -30,6 +31,24 @@ app.post('/create', async (req, res) => {
         
     });
     
+    app.post('/createHours', async (req, res) => {
+        const date = req.body.date;
+        const hours = req.body.hours;
+        const locations = req.body.locations;
+    
+        const hoursData = new HoursModel({
+            date: date,
+            hours: hours,
+            locations: locations,});
+            try {
+                await hoursData.save();
+                res.send('Saved' + hoursData);
+            } catch (error) {
+                console.log(error);
+            }
+    
+        });
+
     app.get('/read', async (req, res) => {
         LocationModel.find({}, (err, result) => {
             if (err) {
@@ -38,6 +57,16 @@ app.post('/create', async (req, res) => {
             res.send(result);
         });
     });
+
+    app.get('/readHours', async (req, res) => {
+        HoursModel.find({}, (err, result) => {
+            if (err) {
+                res.send(err);
+            }
+            res.send(result);
+        });
+    });
+
 
     app.put('/update', async (req, res) => {
         const newLocationName = req.body.name;
