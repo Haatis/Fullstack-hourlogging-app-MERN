@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import useCRUD from '../hooks/useCRUD';
 
 export default function HomePage() {
-  const { locationList, hoursList,  createLocation, updateLocation, deleteLocation } = useCRUD();
+  const { locationList, hoursList,  createLocation, updateLocation, deleteLocation, deleteHours, fetchHours } = useCRUD();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -13,6 +13,12 @@ export default function HomePage() {
   const [showInputFields, setShowInputFields] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    fetchHours();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
 
   const addToList = () => {
@@ -48,11 +54,15 @@ export default function HomePage() {
       setSelectedItems([...selectedItems, id]);
     }
   };
+
+  const deleteHoursItem = (id) => {
+    deleteHours(id);
+  };
   
   
   if (!selectedDate) {
     return (
-      <div>
+      <div className='appBackground'>
         <h2 className='text-center'>Select a date</h2>
         <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
           <input type='date' onChange={(e) => setSelectedDate(e.target.value)} />
@@ -69,6 +79,7 @@ export default function HomePage() {
         <p className='m-2'>{hours.date}</p>
         <p className='m-2'>{hours.hours}</p>
         <p className='m-2'>{locationNames.join(", ")}</p>
+        <button onClick={() => deleteHoursItem(hours._id)} className='btn btn-danger'>delete</button>
       </div>
     </div>
   );
@@ -77,7 +88,7 @@ export default function HomePage() {
     );
 }
   return (
-    <div>
+    <div className='appBackground'>
       <h2 className='text-center'>Selected date: {selectedDate} </h2>
       <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
             <button className='btn btn-primary' onClick={() => setSelectedDate("")}>Edit date</button>
@@ -131,8 +142,8 @@ export default function HomePage() {
         </div>
         {selectedItems.length > 0 && (
           <div>
-          <div className='mb-3 h-100 d-flex align-items-center justify-content-center'>
-            <button className='btn btn-danger' onClick={() => setSelectedItems([])}>Clear selected</button>
+          <div className='mb-2 h-100 d-flex align-items-center justify-content-center'>
+           
             <ul>
               {selectedItems.map((val, index) => {
                 return (
@@ -146,14 +157,22 @@ export default function HomePage() {
               })}
               
             </ul>
+            
           </div>
-          <div className='mt-5 mb-3 h-100 d-flex align-items-center justify-content-center'>
+          <div className=' h-100 d-flex align-items-center justify-content-center'>
+            <button className='btn btn-danger' onClick={() => setSelectedItems([])}>Clear selected</button>
+            </div>
+          <div className='mt-3 mb-3 h-100 d-flex align-items-center justify-content-center'>
+            
           <Link  to={{
     pathname: '/logging',
     search: `?selectedDate=${selectedDate}&selectedItems=${selectedItems}`
   }}><button className='btn btn-primary '>Start logging hours</button></Link>
+  
           </div>
+          
           </div>
+          
         )}
       
     </div>

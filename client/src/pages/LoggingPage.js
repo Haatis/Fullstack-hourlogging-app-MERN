@@ -63,9 +63,9 @@ export default function LoggingPage() {
   });
 
   return (
-    <div>
-      <div className="mt-5 mb-3 h-100 d-flex align-items-center justify-content-center">
-        <h1>Logging page</h1>
+    <div className='appBackground' >
+      <div >
+        <h1 className='text-center'>Logging page</h1>
       </div>
       <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
         <div>
@@ -101,9 +101,9 @@ export default function LoggingPage() {
         <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
             <p className='m-2'>Total hours: {totalHours}</p>
         </div>
-        {totalHours && <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
+        {totalHours ? <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
             <Link to="/"><button className='btn btn-success' onClick={() => createHours(selectedDate, totalHours, selectedLocations)}>Save</button></Link>
-        </div>}
+        </div> : null}
         <div className="mb-3 h-100 d-flex align-items-center justify-content-center">
         <Link to="/"><button className='btn btn-danger'>go back</button></Link>
         </div>

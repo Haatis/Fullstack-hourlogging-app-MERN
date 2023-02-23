@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 const LocationModel = require('./models/Location');
 const HoursModel = require('./models/Hours');
@@ -10,7 +11,7 @@ const HoursModel = require('./models/Hours');
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('own connection string here',
+mongoose.connect('connection string',
  { useNewUrlParser: true, 
 });
 
@@ -88,7 +89,15 @@ app.post('/create', async (req, res) => {
         res.send('Deleted');
     });
 
+    //delete hours
+    app.delete('/deleteHours/:id', async (req, res) => {
+        const id = req.params.id;
+        await HoursModel.findByIdAndRemove(id).exec();
+        res.send('Deleted');
+    });
 
-app.listen(3001, () => {
+
+
+app.listen(process.env.PORT || 3001, () => {
     console.log('Server is listening on port 3001');
     });
